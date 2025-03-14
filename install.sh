@@ -2,6 +2,8 @@
 
 # Load main configuration
 CONFIG_FILE="./reconftw.cfg"
+sed -i 's|reconftw="~/reconftw"|reconftw="$PWD"|' ./bounty.sh # change the default path for the tool in bounty.sh
+
 
 if [[ ! -f $CONFIG_FILE ]]; then
 	echo -e "${bred}[!] Config file reconftw.cfg not found.${reset}"
