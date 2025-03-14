@@ -5590,25 +5590,25 @@ function osint() {
 }
 
 function vulns() {
-	if [[ $VULNS_GENERAL == true ]]; then
-		cors
-		open_redirect
-		ssrf_checks
-		crlf_checks
-		lfi
-		ssti
-		sqli
-		xss
-		command_injection
-		prototype_pollution
-		smuggling
-		webcache
-		spraying
-		brokenLinks
-		fuzzparams
-		4xxbypass
-		test_ssl
-	fi
+	echo "[+] Executing vulns attacks"
+	#cors
+	#open_redirect
+	ssrf_checks
+	crlf_checks
+	lfi
+	ssti
+	sqli
+	xss
+	command_injection
+	prototype_pollution
+	smuggling
+	webcache
+	#spraying
+	fuzzparams
+	4xxbypass
+	#brokenLinks
+	#test_ssl
+
 }
 
 function multi_osint() {
@@ -5678,34 +5678,35 @@ function multi_osint() {
 }
 
 function recon() {
+	echo "[+] Executing recon"
 	domain_info
 	ip_info
-	emails
+	#emails
 	google_dorks
 	#github_dorks
 	github_repos
 	metadata
 	apileaks
 	third_party_misconfigs
-	zonetransfer
-	favicon
+	#zonetransfer
+	#favicon # mv to subs_menu funtion
 
 	if [[ $AXIOM == true ]]; then
 		axiom_launch
 		axiom_selected
 	fi
 
-	subdomains_full
-	webprobe_full
-	subtakeover
-	remove_big_files
-	s3buckets
-	screenshot
+	#subdomains_full
+	#webprobe_full
+	#subtakeover
+	#remove_big_files
+	#s3buckets
+	#screenshot
 	#	virtualhosts
-	cdnprovider
+	#cdnprovider
 	portscan
-	geo_info
-	waf_checks
+	#geo_info
+	#waf_checks
 	fuzz
 	iishortname
 	urlchecks
@@ -5720,7 +5721,7 @@ function recon() {
 	url_gf
 	wordlist_gen
 	wordlist_gen_roboxtractor
-	password_dict
+	#password_dict
 	url_ext
 }
 
@@ -6015,6 +6016,7 @@ function multi_custom() {
 }
 
 function subs_menu() {
+	echo "[+] Executing subdomain enumeration"
 	start
 
 	if [[ $AXIOM == true ]]; then
@@ -6027,9 +6029,10 @@ function subs_menu() {
 	subtakeover
 	remove_big_files
 	screenshot
-	#	virtualhosts
+ 	cdnprovider
 	zonetransfer
 	s3buckets
+ 	#favicon
 
 	if [[ $AXIOM == true ]]; then
 		axiom_shutdown
@@ -6042,7 +6045,6 @@ function webs_menu() {
 	subtakeover
 	remove_big_files
 	screenshot
-	#	virtualhosts
 	waf_checks
 	fuzz
 	cms_scanner
