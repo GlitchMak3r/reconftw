@@ -2,7 +2,7 @@
 
 # Load main configuration
 CONFIG_FILE="./reconftw.cfg"
-sed -i 's|reconftw="~/reconftw"|reconftw="$PWD"|' ./bounty.sh # change the default path for the tool in bounty.sh
+#sed -i 's|reconftw="~/reconftw"|reconftw="$PWD"|' ./bounty.sh # change the default path for the tool in bounty.sh
 
 
 if [[ ! -f $CONFIG_FILE ]]; then
@@ -509,6 +509,7 @@ function install_pacman() {
 function initial_setup() {
 	banner
 	reset_git_proxies
+ 	$SUDO chmod +x ./bounty.sh 
 
 	echo -e "${bblue}Running: Checking for updates${reset}\n"
 	check_updates
