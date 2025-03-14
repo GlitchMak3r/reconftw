@@ -587,6 +587,48 @@ function domain_info() {
 	fi
 }
 
+function emails() {
+
+	mkdir -p {.tmp,osint}
+	if { [[ ! -f "$called_fn_dir/.${FUNCNAME[0]}" ]] || [[ $DIFF == true ]]; } && [[ $EMAILS == true ]] && [[ $OSINT == true ]] && ! [[ $domain =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9] ]]; then
+		start_func ${FUNCNAME[0]} "Searching emails/users/passwords leaks"
+		emailfinder -d $domain 2>>"$LOGFILE" | anew -q .tmp/emailfinder.txt || {
+			echo "emailfinder command failed"
+			exit 1
+		}
+		[ -s ".tmp/emailfinder.txt" ] && cat .tmp/emailfinder.txt | grep "@" | grep -iv "|_" | anew -q osint/emails.txt
+
+		pushd "${tools}/LeakSearch" >/dev/null || {
+			echo "Failed to cd directory in ${FUNCNAME[0]} @ line ${LINENO}"
+		}
+
+		python3 LeakSearch.py -k $domain -o ${dir}/.tmp/passwords.txt 1>>"$LOGFILE" || {
+			echo "LeakSearch command failed"
+		}
+
+		popd >/dev/null || {
+			echo "Failed to popd in ${FUNCNAME[0]} @ line ${LINENO}"
+		}
+
+		[ -s ".tmp/passwords.txt" ] && cat .tmp/passwords.txt | anew -q osint/passwords.txt
+
+		end_func "Results are saved in $domain/osint/emails|passwords.txt" ${FUNCNAME[0]}
+	else
+		if [[ $EMAILS == false ]] || [[ $OSINT == false ]]; then
+			printf "\n${yellow}[$(date +'%Y-%m-%d %H:%M:%S')] ${FUNCNAME[0]} skipped in this mode or defined in reconftw.cfg ${reset}\n"
+		elif [[ $domain =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9] ]]; then
+			return
+		else
+			if [[ $EMAILS == false ]] || [[ $OSINT == false ]]; then
+				printf "\n${yellow}[$(date +'%Y-%m-%d %H:%M:%S')] ${FUNCNAME[0]} skipped in this mode or defined in reconftw.cfg ${reset}\n"
+			else
+				printf "${yellow}[$(date +'%Y-%m-%d %H:%M:%S')] ${FUNCNAME[0]} is already processed, to force executing ${FUNCNAME[0]} delete\n    $called_fn_dir/.${FUNCNAME[0]} ${reset}\n\n"
+			fi
+		fi
+	fi
+
+}
+
 function third_party_misconfigs() {
 	mkdir -p osint
 
@@ -5559,7 +5601,6 @@ function passive() {
 	cdnprovider
 	PORTSCAN_ACTIVE=false
 	portscan
-	geo_info
 
 	if [[ $AXIOM == true ]]; then
 		axiom_shutdown
@@ -5580,8 +5621,9 @@ function osint() {
 	ip_info
 	emails
 	google_dorks
-	#github_dorks
+	github_dorks
 	github_repos
+ 	geo_info
 	metadata
 	apileaks
 	third_party_misconfigs
@@ -5704,8 +5746,6 @@ function recon() {
 	#	virtualhosts
 	cdnprovider
 	portscan
-	geo_info
-	waf_checks
 	fuzz
 	iishortname
 	urlchecks
