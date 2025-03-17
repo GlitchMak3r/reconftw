@@ -675,3 +675,13 @@ If you want to contribute to this project, you can do it in multiple ways:
 Usage of this program for attacking targets without consent is illegal. It is the user's responsibility to obey all applicable laws. The developer assumes no liability and is not responsible for any misuse or damage caused by this program. Please use responsibly.
 
 The material contained in this repository is licensed under MIT.
+
+## Updates
+This repository is a customized version of the tool reconftw. The changes are as follows:
+- Bounty.sh: Executes the tool with threads.
+- Modifications to reconftw.sh:
+  - recon() no longer searches for subdomains or executes OSINT functions.
+  - subs_main() now only executes subdomain searching functions.
+  - all() no longer searches for subdomains; it only runs recon() and vulns().
+  - vulns() no longer performs the functions open_redirect, cors, password_spraying, brokenLinks, or test_ssl.
+
