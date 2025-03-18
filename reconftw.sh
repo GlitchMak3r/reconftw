@@ -5591,8 +5591,7 @@ function osint() {
 
 function vulns() {
 	echo "[+] Executing vulns attacks"
-	#cors
-	#open_redirect
+	
 	ssrf_checks
 	crlf_checks
 	lfi
@@ -5603,9 +5602,11 @@ function vulns() {
 	prototype_pollution
 	smuggling
 	webcache
-	#spraying
 	fuzzparams
 	4xxbypass
+ 	#cors
+	#open_redirect
+ 	#spraying
 	#brokenLinks
 	#test_ssl
 
@@ -5682,8 +5683,8 @@ function recon() {
 	domain_info
 	ip_info
 	#emails
-	google_dorks
-	#github_dorks
+	#google_dorks
+	github_dorks
 	github_repos
 	metadata
 	apileaks
@@ -5702,7 +5703,6 @@ function recon() {
 	#remove_big_files
 	#s3buckets
 	#screenshot
-	#	virtualhosts
 	#cdnprovider
 	portscan
 	#geo_info
